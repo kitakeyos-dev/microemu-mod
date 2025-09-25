@@ -63,6 +63,7 @@
         <module>microemu-midp</module>
         <module>microemu-javase</module>
         <module>microemu-javase-swing</module>
+        <module>lua-script</module>
     </modules>
 
 

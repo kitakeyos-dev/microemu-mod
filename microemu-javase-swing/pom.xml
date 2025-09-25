@@ -30,6 +30,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.microemu</groupId>
+            <artifactId>lua-script</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.kitakeyos-dev</groupId>
             <artifactId>plugin4j</artifactId>
             <version>v1.0.1</version>
@@ -48,12 +53,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.36</version>
-        </dependency>
-        <!-- LuaJ - Lua interpreter for Java -->
-        <dependency>
-            <groupId>org.luaj</groupId>
-            <artifactId>luaj-jse</artifactId>
-            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
