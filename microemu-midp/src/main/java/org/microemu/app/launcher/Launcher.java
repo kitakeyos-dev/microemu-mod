@@ -102,7 +102,7 @@ public class Launcher extends MIDlet implements CommandListener {
 		menuList.addCommand(CMD_LAUNCH);
 		menuList.setCommandListener(this);
 
-		if (midletEntries.size() == 0) {
+		if (midletEntries.isEmpty()) {
 			menuList.append(NOMIDLETS, null);
 		} else {
 			for (int i = 0; i < midletEntries.size(); i++) {

@@ -4,6 +4,7 @@ import me.kitakeyos.script.lib.DynamicJavaLib;
 import me.kitakeyos.script.storage.ScriptFileManager;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.*;
 import org.luaj.vm2.lib.jse.*;
 import org.microemu.app.util.MIDletResourceLoader;
@@ -32,7 +33,6 @@ public class LuaScriptExecutor {
 
     public void executeScript(String scriptName) {
         String separator = new String(new char[50]).replace('\0', '-');
-        infoConsumer.accept("=== Running script: " + scriptName + " ===");
         infoConsumer.accept("Time: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         try {
@@ -51,18 +51,26 @@ public class LuaScriptExecutor {
             globals.load(new JseMathLib());
             globals.load(new JseIoLib());
             globals.load(new JseOsLib());
+            globals.load(new DynamicJavaLib());
 
-            // Load custom Java library
-            ClassLoader externalClassLoader = MIDletResourceLoader.classLoader;
-            if (externalClassLoader != null) {
-                globals.load(new DynamicJavaLib(externalClassLoader));
-            } else {
-                globals.load(new DynamicJavaLib(Thread.currentThread().getContextClassLoader()));
-            }
             String currentPath = globals.get("package").get("path").tojstring();
 
             // Set the new path using the correct method signature
             globals.get("package").set("path", currentPath + ";./" + ScriptFileManager.SCRIPTS_DIR + "/?.lua");
+
+            // Redirect Lua print to output consumer
+            globals.set("print", new VarArgFunction() {
+                @Override
+                public Varargs invoke(Varargs args) {
+                    StringBuilder output = new StringBuilder();
+                    for (int i = 1; i <= args.narg(); i++) {
+                        if (i > 1) output.append("\t");
+                        output.append(args.arg(i).tojstring());
+                    }
+                    outputConsumer.accept(output.toString());
+                    return NONE;
+                }
+            });
 
             // Execute Lua script
             LuaValue chunk = globals.loadfile(new File(ScriptFileManager.SCRIPTS_DIR, scriptName + ".lua").getPath());

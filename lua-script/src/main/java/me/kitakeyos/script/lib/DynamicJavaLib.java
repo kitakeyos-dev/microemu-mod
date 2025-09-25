@@ -1,16 +1,17 @@
 package me.kitakeyos.script.lib;
 
-import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.LuajavaLib;
+import org.microemu.MIDletBridge;
+import org.microemu.app.util.MIDletResourceLoader;
+
+import javax.microedition.midlet.MIDlet;
 
 public class DynamicJavaLib extends LuajavaLib {
-    private final ClassLoader classLoader;
 
-    public DynamicJavaLib(ClassLoader classLoader) {
-        this.classLoader = classLoader;
+    public DynamicJavaLib() {
     }
 
     @Override
@@ -35,7 +36,7 @@ public class DynamicJavaLib extends LuajavaLib {
         public Varargs invoke(Varargs args) {
             try {
                 String className = args.checkjstring(1);
-                Class<?> clazz = loadClassWithFallback(className);
+                Class<?> clazz = loadClass(className);
                 return CoerceJavaToLua.coerce(clazz);
             } catch (ClassNotFoundException e) {
                 return LuaValue.NIL;
@@ -67,7 +68,7 @@ public class DynamicJavaLib extends LuajavaLib {
 
                 // Nếu arg đầu tiên là string (class name)
                 String className = args.checkjstring(1);
-                Class<?> clazz = loadClassWithFallback(className);
+                Class<?> clazz = loadClass(className);
 
                 if (args.narg() == 1) {
                     Object instance = clazz.getDeclaredConstructor().newInstance();
@@ -96,7 +97,7 @@ public class DynamicJavaLib extends LuajavaLib {
                 String className = args.checkjstring(1);
                 String methodName = args.checkjstring(2);
 
-                Class<?> clazz = loadClassWithFallback(className);
+                Class<?> clazz = loadClass(className);
                 java.lang.reflect.Method method = clazz.getMethod(methodName);
                 Object result = method.invoke(null);
 
@@ -107,9 +108,9 @@ public class DynamicJavaLib extends LuajavaLib {
         }
     }
 
-    private Class<?> loadClassWithFallback(String className) throws ClassNotFoundException {
+    private Class<?> loadClass(String className) throws ClassNotFoundException {
         try {
-            return classLoader.loadClass(className);
+            return MIDletResourceLoader.classLoader.loadClass(className);
         } catch (ClassNotFoundException e) {
             try {
                 return Thread.currentThread().getContextClassLoader().loadClass(className);

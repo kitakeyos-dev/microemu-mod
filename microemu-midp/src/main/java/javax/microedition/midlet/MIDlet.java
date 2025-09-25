@@ -68,7 +68,6 @@ public abstract class MIDlet {
 
 	protected MIDlet() {
 		MIDletBridge.registerMIDletAccess(new MIDletAccessor());
-		System.err.println("MIDlet created");
 	}
 
 	protected abstract void startApp() throws MIDletStateChangeException;

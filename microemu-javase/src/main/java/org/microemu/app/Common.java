@@ -941,9 +941,6 @@ public class Common implements MicroEmulator, CommonInterface {
 
     private MIDletClassLoader createMIDletClassLoader(boolean forJad) {
         MIDletClassLoader mcl = new MIDletClassLoader(getExtensionsClassLoader());
-        if (!Serializable.class.isAssignableFrom(Injected.class)) {
-            Logger.error("classpath configuration error, Wrong Injected class detected. microemu-injected module should be after microemu-javase in eclipse");
-        }
         if (mIDletClassLoaderConfig != null) {
             try {
                 mcl.configure(mIDletClassLoaderConfig, forJad);
@@ -982,7 +979,7 @@ public class Common implements MicroEmulator, CommonInterface {
     public void initMIDlet(boolean startMidlet) {
         Class midletClass = null;
 
-        if (midletClassOrUrl != null && Common.isMIDletUrlExtension(midletClassOrUrl)) {
+        if (Common.isMIDletUrlExtension(midletClassOrUrl)) {
             try {
                 File file = new File(midletClassOrUrl);
                 String url = file.exists() ? IOUtils.getCanonicalFileURL(file) : midletClassOrUrl;
@@ -997,13 +994,7 @@ public class Common implements MicroEmulator, CommonInterface {
                 try {
                     classLoader.addClassURL(midletClassOrUrl);
                     midletClass = classLoader.loadClass(midletClassOrUrl);
-                } catch (MalformedURLException e) {
-                    Message.error("Error", "Unable to find MIDlet class, " + Message.getCauseMessage(e), e);
-                    return;
-                } catch (NoClassDefFoundError e) {
-                    Message.error("Error", "Unable to find MIDlet class, " + Message.getCauseMessage(e), e);
-                    return;
-                } catch (ClassNotFoundException e) {
+                } catch (MalformedURLException | NoClassDefFoundError | ClassNotFoundException e) {
                     Message.error("Error", "Unable to find MIDlet class, " + Message.getCauseMessage(e), e);
                     return;
                 }
