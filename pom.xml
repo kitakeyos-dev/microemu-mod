@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://maven.apache.org/POM/4.0.0">
+    <!-- @version $Revision: 2278 $ ($Author: barteo@gmail.com $) $Date: 2010-01-14 10:27:43 -0500 (Thu, 14 Jan 2010) $ -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.microemu</groupId>
+    <artifactId>microemu</artifactId>
+    <version>2.0.4</version><!--me-version-->
+
+    <url>http://www.microemu.org/</url>
+
+    <name>MicroEmulator</name>
+    <packaging>pom</packaging>
+
+    <description>
+        This is Java 2 Micro Edition (J2ME) CLDC/MIDP Emulator. Allows demonstration MIDlet (MIDP/CLDC) based
+        applications in web browser applet, also can be run as standalone java application.
+    </description>
+
+    <organization>
+        <name>MicroEmulator Team</name>
+        <url>http://www.microemu.org/</url>
+    </organization>
+    <inceptionYear>2001</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/licenses/lgpl.html</url>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/microemu/issues/list</url>
+    </issueManagement>
+
+    <scm>
+        <url>http://code.google.com/p/microemu/source/browse/#svn/branches/microemulator_2_0_x</url>
+        <connection>scm:svn:http://microemu.googlecode.com/svn/branches/microemulator_2_0_x</connection>
+        <developerConnection>scm:svn:https://microemu.googlecode.com/svn/branches/microemulator_2_0_x
+        </developerConnection>
+    </scm>
+
+    <mailingLists>
+        <mailingList>
+            <name>microemulator-support</name>
+            <post>microemulator-support@googlegroups.com</post>
+            <archive>http://groups.google.com/group/microemulator-support</archive>
+        </mailingList>
+        <mailingList>
+            <name>microemulator-developers</name>
+            <post>microemulator-developers@googlegroups.com</post>
+            <archive>http://groups.google.com/group/microemulator-developers</archive>
+        </mailingList>
+    </mailingLists>
+
+    <modules>
+        <module>microemu-cldc</module>
+        <module>microemu-midp</module>
+        <module>microemu-javase</module>
+        <module>microemu-javase-swing</module>
+    </modules>
+
+
+    <ciManagement>
+        <system>CruiseControl</system>
+        <url>http://pyx4j.com/cruisecontrol-public/</url>
+    </ciManagement>
+
+    <distributionManagement>
+        <site>
+            <!-- see also profile release below -->
+            <id>m2x-site-snapshot</id>
+            <url>file:///home/apache/microemu-2x</url>
+        </site>
+        <!-- see profile release; -->
+        <repository>
+            <id>pyx4j.com-file-development</id>
+            <url>file:///home/apache/pyx4j-repository/maven2-snapshot</url>
+        </repository>
+
+        <!-- http://repository.pyx4j.com/maven2-snapshot -->
+        <snapshotRepository>
+            <id>pyx4j.com-file-development</id>
+            <url>file:///home/apache/pyx4j-repository/maven2-snapshot</url>
+        </snapshotRepository>
+
+    </distributionManagement>
+
+    <!-- 4snapshot begin { -->
+    <!--
+        <repositories>
+            <repository>
+                <id>pyx4j-public-snapshot</id>
+                <url>http://repository.pyx4j.com/maven2-snapshot</url>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+                <releases>
+                    <enabled>false</enabled>
+                </releases>
+            </repository>
+        </repositories>
+    -->
+    <!-- 4snapshot end } -->
+
+    <pluginRepositories>
+
+        <!-- 4snapshot begin { -->
+        <!--
+                <pluginRepository>
+                    <id>pyx4j-public-snapshot</id>
+                    <url>http://repository.pyx4j.com/maven2-snapshot</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                </pluginRepository>
+        -->
+        <!-- 4snapshot end } -->
+
+        <pluginRepository>
+            <id>codehaus.org</id>
+            <name>Codehaus Central Repository</name>
+            <url>http://repository.codehaus.org</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <properties>
+        <buildLabel>${version}</buildLabel>
+        <jourVersion>2.0.3</jourVersion>
+        <!-- See OS X profile -->
+        <javaRunTimeJar>${java.home}/lib/rt.jar</javaRunTimeJar>
+        <javaRunTimeSecurityJar>${java.home}/lib/jsse.jar</javaRunTimeSecurityJar>
+        <assemblyPluginVersion>2.2-beta-1</assemblyPluginVersion>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.jour</groupId>
+                <artifactId>jour-instrument</artifactId>
+                <version>${jourVersion}</version>
+                <scope>test</scope>
+                <optional>true</optional>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <developers>
+        <developer>
+            <name>Bartek Teodorczyk</name>
+            <id>barteo</id>
+            <email>barteo@barteo.net</email>
+            <roles>
+                <role>admin</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+
+        <developer>
+            <name>Markus Heberling</name>
+            <id>tisoft</id>
+            <email>markus@heberling.net</email>
+            <organization>markus@heberling.net</organization>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>Vlad Skarzhevskyy</name>
+            <id>vlads</id>
+            <email>skarzhevskyy@gmail.com</email>
+            <organization>Pyx Software Services Inc.</organization>
+            <organizationUrl>http://www.pyx4me.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+                <role>build master</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+
+        <!-- template for new developer
+        <developer>
+            <name></name>
+            <id></id>
+            <email></email>
+            <organization></organization>
+            <roles>
+                <role></role>
+            </roles>
+        </developer>
+        -->
+    </developers>
+
+    <contributors>
+        <contributor>
+            <organization>3G Lab</organization>
+            <organizationUrl>http://www.3glab.com</organizationUrl>
+        </contributor>
+
+        <contributor>
+            <name>Julian L. Hunter</name>
+        </contributor>
+
+        <contributor>
+            <name>daniel(at)angrymachine.com.ar</name>
+        </contributor>
+
+        <contributor>
+            <name>Andres Navarro</name>
+        </contributor>
+
+        <contributor>
+            <name>Christian d'Heureuse</name>
+            <organization>Inventec Informatik AG, Switzerland.</organization>
+            <roles>
+                <role>Base64Coder</role>
+            </roles>
+        </contributor>
+
+        <contributor>
+            <name>David Luscombe</name>
+            <organizationUrl>http://www.istockphoto.com/fontmonster/</organizationUrl>
+            <roles>
+                <role>Designer</role>
+            </roles>
+        </contributor>
+
+        <contributor>
+            <name>Matthew Palmer</name>
+            <roles>
+                <role>Designer</role>
+            </roles>
+        </contributor>
+
+        <contributor>
+            <name>Rushabh Doshi</name>
+            <email>radoshi@cs.stanford.edu</email>
+            <organization>Pelago, Inc</organization>
+        </contributor>
+
+        <!-- template for new contributor
+        <contributor>
+            <name></name>
+            <email></email>
+            <organization></organization>
+            <organizationUrl></organizationUrl>
+            <roles>
+                <role></role>
+            </roles>
+        </contributor>
+        -->
+    </contributors>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+
+        <pluginManagement>
+            <plugins>
+                <!-- m2bug; the same dependencies declared in microemu-test-midlet and api stub projects will not work if building from root -->
+                <plugin>
+                    <groupId>net.sf.jour</groupId>
+                    <artifactId>jour-maven-plugin</artifactId>
+                    <version>${jourVersion}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <includes>
+                        <include>**/*Test.*</include>
+                        <include>**/*Tests.*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>
